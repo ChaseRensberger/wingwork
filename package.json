@@ -1,0 +1,5 @@
+{
+  "name": "wingwork",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"]
+}
