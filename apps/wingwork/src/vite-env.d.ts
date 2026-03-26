@@ -1,0 +1,6 @@
+/// <reference types="vite/client" />
+
+declare module "*.css" {}
+declare module "@fontsource-variable/geist" {}
+declare module "@fontsource-variable/geist-mono" {}
+declare module "@workspace/ui/styles/globals.css" {}
