@@ -67,8 +67,10 @@ function groupByDate(messages: MessageEntry[]): DateGroup[] {
   return groups
 }
 
+const EMPTY_MESSAGES: MessageEntry[] = []
+
 export function MessageList({ roomId }: MessageListProps) {
-  const messages = useMessagesStore((s) => s.messages[roomId] ?? [])
+  const messages = useMessagesStore((s) => s.messages[roomId] ?? EMPTY_MESSAGES)
   const loadMessages = useMessagesStore((s) => s.loadMessages)
   const loadOlderMessages = useMessagesStore((s) => s.loadOlderMessages)
   const isLoadingHistory = useMessagesStore((s) => s.isLoadingHistory)
@@ -87,13 +89,9 @@ export function MessageList({ roomId }: MessageListProps) {
     return () => cleanup()
   }, [initialize, cleanup])
 
-  // Load messages when room changes and mark the room as read
+  // Load messages when room changes
   useEffect(() => {
     loadMessages(roomId)
-    const { client } = useAuthStore.getState()
-    if (client) {
-      void markRoomAsRead(client, roomId)
-    }
   }, [roomId, loadMessages])
 
   // Send a read receipt when new messages arrive
@@ -103,7 +101,7 @@ export function MessageList({ roomId }: MessageListProps) {
     if (client) {
       void markRoomAsRead(client, roomId)
     }
-  }, [roomId, messages])
+  }, [roomId, messages.length])
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
